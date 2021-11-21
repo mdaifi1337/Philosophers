@@ -1,0 +1,39 @@
+uint num_of_philosophers
+		- uint time_to_die
+		- uint time_to_eat
+		- uint time_to_sleep
+		- uint max_meals (optional)
+		+ philos*
+			- mutex fork
+			- thread this
+			- time_ms last_meal
+			- uint meal_count
+			- mutex this_lock
+		- uint can_eat = nb_philos - 1 (init)
+		- mutex can_eat_lock
+		- mutex print_lock
+run_philos
+	— create thread per philo
+		» infinite loop
+			+ think
+				- print is thinking
+				- check if this can eat
+			+ eat
+				- grab your fork
+				- grab right fork
+				- update num of eaten meals and last time this ate (safe with this_lock)
+				- print is eating
+				- actually eat (usleep)
+				- drop forks
+			+ sleep
+				- print is sleeping
+				- actually sleep (usleep)
+	— create a thread for azrael
+		- loop while all are alive [and not all are full (optional)]
+free(data)
+	- destroy_mutexes
+	- free(philos)
+	
+	id = (id + 1) % nbr_of_philos
+	id = (0 + 1) % 4
+	id = (1 + 1) % 4
